@@ -15,48 +15,47 @@ options
 -------
 
 *  uri:
-    description:  Base URI for the Jenkins instance
-    required: true
+    - description:  Base URI for the Jenkins instance
+    - required: true
 
 *  username:
-    description:  The username to log-in with.
-    required: true
+    - description:  The username to log-in with.
+    - required: true
 
 *  password:
-    description:  The password to log-in with.
-    required: true
+    - description:  The password to log-in with.
+    - required: true
 
 *  operation:
-    description:  Operation to perform
-    required: false
-    default: 'create'
-    choices: [ create, delete, enable, disable ]
+    - description:  Operation to perform
+    - required: false
+    - default: 'create'
+    - choices: [ create, delete, enable, disable ]
 
 *  name:
-    description:
-      - Node name
-    required: true
+    - description: Node name
+    - required: true
 
 *  executors:
-    description:  Number of executors in node
-    required: false
-    default: 2
+    - description:  Number of executors in node
+    - required: false
+    - default: 2
 
 *  description:
-    description:  Description of the node
-    required: false
-    default: null
+    - description:  Description of the node
+    - required: false
+    - default: null
 
 *  labels:
-    description:  Labels to associate with a node, like "amd64" or "python"
-    required: false
-    default: null
+    - description:  Labels to associate with a node, like "amd64" or "python"
+    - required: false
+    - default: null
 
 *  exclusive:
-    description:  Mark this node for tied jobs only
-    required: false
-    default: 'no'
-    choices: ['no', 'yes']
+    - description:  Mark this node for tied jobs only
+    - required: false
+    - default: 'no'
+    - choices: ['no', 'yes']
 
 
 examples
