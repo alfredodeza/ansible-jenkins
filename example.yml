@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  vars:
+    - username: adeza
+    - password: secret
+    - uri: "http://jenkins.ceph.com"
+
+  tasks:
+    - name: create a new node
+      jenkins-node: username={{ username }} uri={{ uri }} password={{ password }} name="newnode"
+
+    - name: disable a node
+      jenkins-node: username={{ username }} uri={{ uri }} password={{ password }} name="newnode" operation=disable
+
+    - name: enable a node
+      jenkins-node: username={{ username }} uri={{ uri }} password={{ password }} name="newnode" operation=enable
+
+    - name: delete the created node
+      jenkins-node: username={{ username }} uri={{ uri }} password={{ password }} name="newnode" operation=delete
+
