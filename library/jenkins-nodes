@@ -90,7 +90,7 @@ def _jenkins(uri, username, password):
     return jenkins.jenkins(uri, username, password)
 
 
-def create(uri, user, password, name, config=EMPTY_JOB_CONFIG):
+def create(uri, user, password, name, **kw):
     jenkins = _jenkins(uri, user, password)
     if name in jenkins.jobs:
         return False, "Failed to create job '%s' - already exists." % name
@@ -100,7 +100,7 @@ def create(uri, user, password, name, config=EMPTY_JOB_CONFIG):
     return True, None
 
 
-def delete(uri, user, password, name, config):
+def delete(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
     if name not in j:
         return False, "Could not delete '%s' - unknown job." % name
@@ -108,7 +108,7 @@ def delete(uri, user, password, name, config):
     return True, None
 
 
-def enable(uri, user, password, name, config):
+def enable(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
     if name not in j:
         return False, "Could not enable '%s' - unknown job." % name
@@ -120,7 +120,7 @@ def enable(uri, user, password, name, config):
         return True, None
 
 
-def disable(uri, user, password, name, config):
+def disable(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
     if name not in j:
         return False, "Could not disable '%s' - unknown job." % name
@@ -130,15 +130,6 @@ def disable(uri, user, password, name, config):
         return True, None
     else:
         return False, "Job already disabled"
-
-
-def modify(uri, user, pasword, name, config):
-    j = _jenkins(uri, user, pasword)
-    if name not in j:
-        return False, "Could not modify '%s' - unknown job." % name
-    job = j[name]
-    job.update_config(_clean_xml_str(config))
-    return True, None
 
 
 def main():
@@ -158,27 +149,51 @@ def main():
     )
 
     if not HAS_JENKINS_API:
-        module.fail_json(msg="Could not import python modules: jenkins. Please install jenkins package.")
+        module.fail_json(msg="Could not import python module: jenkins. Please install the python-jenkins package.")
 
     uri = module.params['uri']
     username = module.params['username']
     password = module.params['password']
+    operation = module.params.get('operation', 'create')
     name = module.params['name']
-    config_params = module.params['config_params']
-    config = module.params['config']
+    executors = module.params['executors']
+    description = module.params.get('description')
+    labels = module.params.get('labels')
+    exclusive = module.params.get('exclusive', False)
 
-    config_str = template.template_from_file(None, config, config_params)
+    api_calls = {
+        'create': create,
+        'delete': delete,
+        'enable': enable,
+        'disable': disable
+    }
+
     try:
-        op = module.params['operation']
-        thismodule = sys.modules[__name__]
-        method = getattr(thismodule, op)
-        changed, msg = method(uri, username, password, name, config_str)
-        args = {'changed': changed}
-        if msg:
-            args['msg'] = msg
-        module.exit_json(**args)
+        func = api_calls[operation]
+    except KeyError:
+        return module.fail_json(
+            msg="operation: %s is not supported. Choose one of: %s'" % (
+                operation, str(api_calls.keys()))
+        )
+
+    try:
+        changed, msg = func(
+            uri,
+            username,
+            password,
+            name,
+            executors=executors,
+            description=description,
+            labels=labels,
+            exclusive=exclusive
+        )
     except Exception as ex:
         return module.fail_json(msg=ex.message)
+
+    args = {'changed': changed}
+    if msg:
+        args['msg'] = msg
+    module.exit_json(**args)
 
 
 # yep, everything: https://docs.ansible.com/developing_modules.html#common-module-boilerplate
