@@ -11,7 +11,9 @@ This module requires the `python-jenkins` package, available from PyPI.
 This module provides some management features to control Jenkins
 nodes.
 
-options:
+options
+-------
+
 *  uri:
     description:  Base URI for the Jenkins instance
     required: true
