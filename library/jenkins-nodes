@@ -152,8 +152,7 @@ def main():
             executors=dict(required=False, default=2),
             description=dict(required=False, default=None),
             labels=dict(required=False, default=None),
-            exclusive=dict(required=False, default=False, choices=[False, True]),
-            )
+            exclusive=dict(required=False, default='no', type='bool'),
         ),
         supports_check_mode=False
     )
