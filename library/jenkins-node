@@ -115,34 +115,28 @@ def create(uri, user, password, name, **kw):
 
 def delete(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
-    if name not in j:
-        return False, "Could not delete '%s' - unknown job." % name
-    j.delete_job(name)
+    if not j.node_exists(name):
+        return False, "Could not delete '%s' - unknown node." % name
+    j.delete_node(name)
+    if j.node_exists(name):
+        return False, "Failed to delete node '%s'." % name
     return True, None
 
 
 def enable(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
-    if name not in j:
-        return False, "Could not enable '%s' - unknown job." % name
-    job = j[name]
-    if job.is_enabled():
-        return False, "Job already enabled"
-    else:
-        job.enable()
-        return True, None
+    if not j.node_exists(name):
+        return False, "Could not enable '%s' - unknown node." % name
+    j.enable_node(name)
+    return True, None
 
 
 def disable(uri, user, password, name, **kw):
     j = _jenkins(uri, user, password)
-    if name not in j:
-        return False, "Could not disable '%s' - unknown job." % name
-    job = j[name]
-    if job.is_enabled():
-        job.disable()
-        return True, None
-    else:
-        return False, "Job already disabled"
+    if not j.node_exists(name):
+        return False, "Could not disable '%s' - unknown node." % name
+    j.disable_node(name)
+    return True, None
 
 
 def main():
