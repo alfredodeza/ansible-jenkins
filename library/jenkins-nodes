@@ -177,8 +177,8 @@ def main():
     except Exception as ex:
         return module.fail_json(msg=ex.message)
 
-# FIXME: Is this even needed?
-#from ansible.module_utils.basic import *
-#from ansible.utils import template
 
-main()
+# yep, everything: https://docs.ansible.com/developing_modules.html#common-module-boilerplate
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()
