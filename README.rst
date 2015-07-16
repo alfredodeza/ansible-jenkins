@@ -12,54 +12,46 @@ This module provides some management features to control Jenkins
 nodes.
 
 options:
-  uri:
-    description:
-      - Base URI for the Jenkins instance
+*  uri:
+    description:  Base URI for the Jenkins instance
     required: true
 
-  username:
-    description:
-      - The username to log-in with.
+*  username:
+    description:  The username to log-in with.
     required: true
 
-  password:
-    description:
-      - The password to log-in with.
+*  password:
+    description:  The password to log-in with.
     required: true
 
-  operation:
-    description:
-      - Operation to perform
+*  operation:
+    description:  Operation to perform
     required: false
     default: 'create'
     choices: [ create, delete, enable, disable ]
 
-  name:
+*  name:
     description:
       - Node name
     required: true
 
-  executors:
-    description:
-      - Number of executors in node
+*  executors:
+    description:  Number of executors in node
     required: false
     default: 2
 
-  description:
-    description:
-      - Description of the node
+*  description:
+    description:  Description of the node
     required: false
     default: null
 
-  labels:
-    description:
-      - Labels to associate with a node, like "amd64" or "python"
+*  labels:
+    description:  Labels to associate with a node, like "amd64" or "python"
     required: false
     default: null
 
-  exclusive:
-    description:
-      - Mark this node for tied jobs only
+*  exclusive:
+    description:  Mark this node for tied jobs only
     required: false
     default: 'no'
     choices: ['no', 'yes']
