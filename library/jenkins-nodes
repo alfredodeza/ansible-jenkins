@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 DOCUMENTATION = """
@@ -87,16 +87,29 @@ except ImportError:
 
 
 def _jenkins(uri, username, password):
-    return jenkins.jenkins(uri, username, password)
+    return jenkins.Jenkins(uri, username, password)
+
+
+def translate_params(params):
+    sanitized = {}
+    mapping = {
+        'executors': 'numExecutors',
+        'description': 'nodeDescription',
+    }
+    for k, v in params.items():
+        key = mapping.get(k, k)
+        sanitized[key] = v
+    return sanitized
 
 
 def create(uri, user, password, name, **kw):
-    jenkins = _jenkins(uri, user, password)
-    if name in jenkins.jobs:
-        return False, "Failed to create job '%s' - already exists." % name
-    jenkins.create_job(name, _clean_xml_str(config))
-    if name not in jenkins:
-        return False, "Failed to create job '%s'." % name
+    params = translate_params(kw)
+    j = _jenkins(uri, user, password)
+    if j.node_exists(name):
+        return False, "Failed to create node '%s' - already exists." % name
+    j.create_node(name, **params)
+    if not j.node_exists(name):
+        return False, "Failed to create node '%s'." % name
     return True, None
 
 
