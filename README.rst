@@ -1,3 +1,80 @@
 ansible-jenkins
 ===============
-An ansible module to control a Jenkins server.
+An ansible module to control a Jenkins server. Currently supports:
+
+* node management (via `jenkins-node` module)
+
+This module requires the `python-jenkins` package, available from PyPI.
+
+`jenkins-node`
+==============
+This module provides some management features to control Jenkins
+nodes.
+
+options:
+  uri:
+    description:
+      - Base URI for the Jenkins instance
+    required: true
+
+  username:
+    description:
+      - The username to log-in with.
+    required: true
+
+  password:
+    description:
+      - The password to log-in with.
+    required: true
+
+  operation:
+    description:
+      - Operation to perform
+    required: false
+    default: 'create'
+    choices: [ create, delete, enable, disable ]
+
+  name:
+    description:
+      - Node name
+    required: true
+
+  executors:
+    description:
+      - Number of executors in node
+    required: false
+    default: 2
+
+  description:
+    description:
+      - Description of the node
+    required: false
+    default: null
+
+  labels:
+    description:
+      - Labels to associate with a node, like "amd64" or "python"
+    required: false
+    default: null
+
+  exclusive:
+    description:
+      - Mark this node for tied jobs only
+    required: false
+    default: 'no'
+    choices: ['no', 'yes']
+
+
+examples
+--------
+Create new node::
+
+    - name: Create new node
+      jenkins-node: uri={{ jenkins_uri }} username={{ user }} password={{ password }}
+               name={{ node_name }} operation=create
+
+Delete an existing node::
+
+    - name: Delete a node
+      jenkins-node: uri={{ jenkins_uri }} username={{ user }} password={{ password }}
+               name={{ node_name }} operation=delete
