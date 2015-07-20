@@ -72,8 +72,7 @@ options
         credentials.xml or via the url {host}/credential-store/domain/_/credential/{id}
 
 *  host:
-    description:
-      - hostname or IP for the host to connect to the slave
+    - description: hostname or IP for the host to connect to the slave
 
 examples
 --------
