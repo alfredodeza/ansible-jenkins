@@ -61,6 +61,27 @@ options:
     default: 'no'
     choices: ['no', 'yes']
 
+  launcher:
+    description:
+      - Launcher method for a remote node (only needed for 'create' operations)
+    required: false
+    default: 'hudson.plugins.sshslaves.SSHLauncher'
+
+  remoteFS:
+    description:
+      - Path to the directory used for builds
+    required: false
+
+  credentialsId:
+    description:
+      - the ID of the user needed for authentication. Usually found in
+        credentials.xml or via the url
+        {host}/credential-store/domain/_/credential/{id}
+
+  host:
+    description:
+      - hostname or IP for the host to connect to the slave
+
 requirements: ['python-jenkins']
 author:
     - "Alfredo Deza"
