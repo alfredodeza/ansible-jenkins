@@ -178,7 +178,7 @@ def main():
             labels=dict(required=False, default=None),
             host=dict(required=False, default=None),
             credentialsId=dict(required=False, default=None),
-            launcher=dict(required=False, default=None),
+            launcher=dict(required=False, default='hudson.plugins.sshslaves.SSHLauncher'),
             remoteFS=dict(required=False, default=None),
             exclusive=dict(required=False, default='no', type='bool'),
         ),
@@ -186,9 +186,7 @@ def main():
     )
 
     if not HAS_JENKINS_API:
-        import sys
-        import os
-        module.fail_json(msg="Could not import python module: jenkins. Please install the python-jenkins package. %s" % os.environ)
+        module.fail_json(msg="Could not import python module: jenkins. Please install the python-jenkins package.")
 
     uri = module.params['uri']
     username = module.params['username']
