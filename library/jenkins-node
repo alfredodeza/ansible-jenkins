@@ -76,7 +76,8 @@ options:
     description:
       - the ID of the user needed for authentication. Usually found in
         credentials.xml or via the url
-        {host}/credential-store/domain/_/credential/{id}
+	{host}/credential-store/domain/_/credential/{id}. By default this is an
+        SSH user account and key (see "launcher" above).
 
   host:
     description:
