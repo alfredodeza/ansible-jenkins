@@ -234,7 +234,16 @@ def main():
             remoteFS=remoteFS,
         )
     except Exception as ex:
-        return module.fail_json(msg=ex.message)
+        # Ensure that errors going out to Jenkins, specifically the network
+        # requests, can be properly translated into meaningful errors so that
+        # Ansible can report those back.
+
+        if ex.__class__.__name__ == 'HTTPError':
+            msg = "HTTPError %s: %s" % (exc_obj.code, exc_obj.url)
+        else:
+            message = getattr(ex_obj.message, None)
+            msg = getattr(ex_obj.msg, message)
+        return module.fail_json(msg=msg)
 
     args = {'changed': changed}
     if msg:
