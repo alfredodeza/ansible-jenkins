@@ -58,6 +58,9 @@ options
     - choices: ['no', 'yes']
 
 
+Launcher and Launcher Parameters
+--------------------------------
+
 *  launcher:
     - description: Launcher method for a remote node (only needed for 'create' operations)
     - required: false
@@ -73,6 +76,23 @@ options
 
 *  host:
     - description: hostname or IP for the host to connect to the slave
+
+* port:
+    - description:  The TCP port on which the slave's SSH daemon is listening, usually 22.
+    - default: 22
+
+* maxNumRetries:
+    - description: Set the number of times the SSH connection will be retried if
+          the initial connection results in an error. If empty, retrying will be
+          disabled.
+    - default: 0
+
+* retryWaitTime:
+    - description: Set the number of seconds to wait between retry attempts of
+          the initial SSH connection. Only used if ``maxNumRetries`` is
+          enabled.
+    - default: 0
+
 
 examples
 --------
