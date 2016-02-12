@@ -62,7 +62,9 @@ Launcher and Launcher Parameters
 --------------------------------
 
 *  launcher:
-    - description: Launcher method for a remote node (only needed for 'create' operations)
+    - description: Launcher method for a remote node (only needed for 'create' operations). Other
+        possible values accepted like JNLP: 'hudson.slaves.JNLPLauncher'
+
     - required: false
     - default: 'hudson.plugins.sshslaves.SSHLauncher'
 
